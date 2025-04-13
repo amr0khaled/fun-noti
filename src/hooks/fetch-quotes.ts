@@ -8,7 +8,7 @@ export type Quote = {
 }
 
 export const useFetchQuote = () => {
-  const baseApi = 'https://corsproxy.io/?url=https://my-fun-api.onrender.com/'
+  const baseApi = 'https://api.codetabs.com/v1/proxy?quest=https://my-fun-api.onrender.com/'
   const [whichType, setType] = useState<QuoteType>('compliment')
   const [isLoading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -26,11 +26,12 @@ export const useFetchQuote = () => {
 
     const url = `${baseApi}${type}`
     try {
-      const res = await fetch(url)
+      const res = await fetch(encodeURI(url))
       if (!res.ok) {
         throw new Error("HTTP error!: " + res.status)
       }
-      return await res.json() as Quote
+      const ob = await res.json()
+      return ob
     } catch (e) {
       console.error('Fetch error:', e)
       setError(true)
@@ -47,7 +48,7 @@ export const useFetchQuote = () => {
         setError(false)
         setLoading(true)
         const res = await fetching()
-        if (!res) throw new Error("Empty response")
+        if (res === undefined) throw new Error("Empty response")
         setQuote(res)
         setLoading(false)
         break
