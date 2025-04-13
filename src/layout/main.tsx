@@ -20,6 +20,7 @@ export default function Main() {
     quote,
     isLoading,
     upper: upperType,
+    error
   } = useFetchQuote()
   return (
     <main className='flex justify-center items-center h-[90vh]'>
@@ -34,7 +35,7 @@ export default function Main() {
             isLoading
               ? <div className='w-full flex justify-center items-center'><Spinner /></div>
               :
-              <Label className={`text-wrap`}>{!quote.data[whichType] ? 'Press this button to get your words 👇' : quote.data[whichType]}</Label>
+              <h3 className={`text-wrap font-semibold text-xl ${error ? 'text-red-400' : 'text-green-300'}`.trim()}>{!quote.data[whichType] ? 'Press this button to get your words 👇' : quote.data[whichType]}</h3>
           }
           <Separator />
         </CardContent>

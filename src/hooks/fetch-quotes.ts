@@ -9,6 +9,7 @@ export type Quote = {
 export const useFetchQuote = () => {
   const [whichType, setType] = useState<QuoteType>('compliment')
   const [isLoading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
   const { upper: word, setWord } = useUpper()
   const [quote, setQuote] = useState<Quote>({
     success: false,
@@ -30,11 +31,13 @@ export const useFetchQuote = () => {
     setWord(whichType as QuoteType)
     for (let tries = 0; tries < MAX_TRIES; tries++) {
       try {
+        setError(false)
         setLoading(true)
         setQuote(await fetching())
         setLoading(false)
         break
       } catch (e) {
+        setError(true)
         setLoading(false)
         JSON.stringify(e)
         setQuote({
@@ -71,7 +74,8 @@ export const useFetchQuote = () => {
     type: whichType,
     upper: word,
     quote,
-    exec: fetchQuotes
+    exec: fetchQuotes,
+    error
   }
 }
 
