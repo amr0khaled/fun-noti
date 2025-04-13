@@ -20,15 +20,27 @@ export const useFetchQuote = () => {
     data: {}
   })
   const fetching = async () => {
+    let res: Response
     let type = whichType
     if (whichType.includes('_')) {
       type = whichType.split('_').join('') as QuoteType
     }
-    const res = await fetch(`${api}${type}`)
-    if (!res.ok) {
-      throw new Error("HTTP error!: " + res.status)
+    try {
+      res = await fetch(`${api}${type}`)
+      if (!res.ok) {
+        throw new Error("HTTP error!: " + res.status)
+      }
+      return await res.json() as Quote
+    } catch (e) {
+      JSON.stringify(e)
+      setError(true)
+      return {
+        success: false,
+        data: {
+          [whichType]: "Error"
+        }
+      } as Quote
     }
-    return await res.json() as Quote
   }
   const delay = (ms: number) => {
     return new Promise(e => setTimeout(e, ms))
