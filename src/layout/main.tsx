@@ -2,56 +2,45 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectLabel, SelectTrigger, SelectValue, SelectGroup, SelectItem } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { Spinner } from "@/components/ui/spinner"
-import { useCallback, useMemo, useState } from "react"
+import { QuoteType, useFetchQuote } from "@/hooks/fetch-quotes"
+import { useIsMobile } from "@/hooks/is-mobile"
 
-type QuoteType = 'compliment' | 'fortune' | 'funfact' | 'pizzaidea' | 'lifetruth' | 'thought'
-type Quote = {
-  success: boolean,
-  data: { [key: string]: string }
-}
 
 const quoteTypes = ['compliment', 'fortune', 'fun_fact', 'pizza_idea', 'life_truth', 'thought']
 const titletype = ['Compliment', 'Fortune', 'Fun fact', 'Pizza idea', 'Life truth', 'Thought']
 
 export default function Main() {
-  const [whichType, setType] = useState<QuoteType>('compliment')
-  const [isLoading, setLoading] = useState(false)
-  const [quote, setQuote] = useState<Quote>({
-    success: false,
-    data: {}
-  })
-  const fetchQuotes = useCallback(async () => {
-    setLoading(true)
-    let type = whichType
-    if (whichType.includes('_')) {
-      type = whichType.split('_').join('') as QuoteType
-    }
-    const res = await fetch(`/api/${type}`)
-    setQuote(await res.json() as Quote)
-    setLoading(false)
-  }, [whichType])
-
-  const upperType = useMemo(() => {
-    let type = whichType
-    if (whichType.includes('_')) {
-      type = whichType.replace('_', " ") as QuoteType
-    }
-    return `${type[0].toUpperCase()}${type.slice(1)}`
-  }, [whichType])
+  const isMobile = useIsMobile()
+  const {
+    setType,
+    type: whichType,
+    exec,
+    quote,
+    isLoading,
+    upper: upperType,
+  } = useFetchQuote()
   return (
     <main className='flex justify-center items-center h-[90vh]'>
-      <Card className='flex flex-col justify-center gap-8 w-[500px] min-w-[450px]'>
+      <Card className='flex flex-col justify-center w-[330px] min-w-[250px] md:w-[500px] md:min-w-[450px]'>
         <CardHeader className='flex flex-col gap-y-4'>
           <CardTitle>Get your fun words for today!</CardTitle>
           <Label>Select your words type</Label>
         </CardHeader>
-        <CardContent>
-          <p className='text-wrap'>{isLoading ? <Spinner /> : !quote.data[whichType] ? 'Press this button to get your words 👇' : quote.data[whichType]}</p>
+        <CardContent className='flex flex-col gap-8 justify-between'>
+          <Separator />
+          {
+            isLoading
+              ? <div className='w-full flex justify-center items-center'><Spinner /></div>
+              :
+              <Label className={`text-wrap`}>{!quote.data[whichType] ? 'Press this button to get your words 👇' : quote.data[whichType]}</Label>
+          }
+          <Separator />
         </CardContent>
-        <CardFooter className='flex justify-around'>
+        <CardFooter className={`flex justify-around ${isMobile && 'flex-col gap-4'}`.trim()}>
           <Select onValueChange={(e: QuoteType) => setType(e)} defaultValue={whichType}>
-            <SelectTrigger>
+            <SelectTrigger className={`cursor-pointer ${isMobile && "w-full"}`.trim()}>
               <SelectValue placeholder={upperType} />
             </SelectTrigger>
             <SelectContent>
@@ -65,7 +54,9 @@ export default function Main() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button className="cursor-pointer" onClick={fetchQuotes}>{isLoading ? "Loading..." : `Get your ${upperType}`}</Button>
+          <Button className={`cursor-pointer hover:brightness-95 ${isMobile && "w-full"}`.trim()} onClick={exec}>
+            {isLoading ? "Loading..." : `Get your ${upperType}`}
+          </Button>
         </CardFooter>
       </Card>
     </main>
