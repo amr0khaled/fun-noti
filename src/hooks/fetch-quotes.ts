@@ -25,6 +25,9 @@ export const useFetchQuote = () => {
       type = whichType.split('_').join('') as QuoteType
     }
     const res = await fetch(`${api}${type}`)
+    if (!res.ok) {
+      throw new Error("HTTP error!: " + res.status)
+    }
     return await res.json() as Quote
   }
   const delay = (ms: number) => {
