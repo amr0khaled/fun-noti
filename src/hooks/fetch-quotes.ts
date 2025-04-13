@@ -7,6 +7,10 @@ export type Quote = {
   data: { [key: string]: string }
 }
 export const useFetchQuote = () => {
+  let api = '/api/'
+  if (import.meta.env.MODE === 'production') {
+    api = 'https://my-fun-api.onrender.com/'
+  }
   const [whichType, setType] = useState<QuoteType>('compliment')
   const [isLoading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -20,7 +24,7 @@ export const useFetchQuote = () => {
     if (whichType.includes('_')) {
       type = whichType.split('_').join('') as QuoteType
     }
-    const res = await fetch(`/api/${type}`)
+    const res = await fetch(`${api}${type}`)
     return await res.json() as Quote
   }
   const delay = (ms: number) => {

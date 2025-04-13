@@ -22,7 +22,6 @@ export default function Main() {
     upper: upperType,
     error
   } = useFetchQuote()
-  console.log(import.meta.env.MODE === 'production')
   return (
     <main className='flex justify-center items-center h-[90vh]'>
       <Card className='flex flex-col justify-center w-[330px] min-w-[250px] md:w-[500px] md:min-w-[450px]'>
