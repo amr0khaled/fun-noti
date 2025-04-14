@@ -1,13 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@/components/ui/navigation-menu'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { FaRegSun, FaRegMoon } from 'react-icons/fa'
 import { IoMdMenu } from 'react-icons/io'
 import '@/style/layout/header.css'
+import { useIsMobile } from '@/hooks/is-mobile'
 
 
 export default function Header() {
+  const isMobile = useIsMobile()
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [currentWidth, setWidth] = useState<number>(0)
   const navBarContent = [
@@ -20,7 +22,11 @@ export default function Header() {
       child: 'Contact'
     },
   ]
-
+  useEffect(() => {
+    if ('theme' in localStorage) {
+      setTheme(localStorage.theme)
+    }
+  }, [])
 
   useLayoutEffect(() => {
     const html = document.documentElement
@@ -31,7 +37,7 @@ export default function Header() {
     )
     localStorage.theme = matches ? 'dark' : 'light';
 
-  })
+  }, [theme])
   useLayoutEffect(() => {
     setWidth(window.innerWidth)
   }, [currentWidth])
@@ -40,7 +46,7 @@ export default function Header() {
       <nav className='header-container'>
         <span className='logo'>Fun Noti</span>
         {
-          currentWidth > 430
+          !isMobile
             ? (
               <NavigationMenu className='navbar'>
                 {navBarContent.map((e, i) => <NavigationMenuLink href={e.href} className='navbar-item' key={i}>{e.child}</NavigationMenuLink>

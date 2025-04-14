@@ -24,7 +24,7 @@ export default function Main() {
   } = useFetchQuote()
   return (
     <main className='flex justify-center items-center h-[90vh]'>
-      <Card className='flex flex-col justify-center w-[330px] min-w-[250px] md:w-[500px] md:min-w-[450px]'>
+      <Card className='flex flex-col justify-center w-[330px] min-w-[250px] sm:w-[500px] sm:min-w-[450px]'>
         <CardHeader className='flex flex-col gap-y-4'>
           <CardTitle>Get your fun words for today!</CardTitle>
           <Label>Select your words type</Label>
@@ -35,11 +35,11 @@ export default function Main() {
             isLoading
               ? <div className='w-full flex justify-center items-center'><Spinner /></div>
               :
-              <h3 className={`text-wrap font-semibold text-xl ${error ? 'text-red-400' : 'text-green-300'}`.trim()}>{!quote.data[whichType] ? 'Press this button to get your words 👇' : quote.data[whichType]}</h3>
+              <h3 className={`text-wrap font-semibold text-xl ${error ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-300'}`.trim()}>{!quote.data[whichType] ? 'Press this button to get your words 👇' : quote.data[whichType]}</h3>
           }
           <Separator />
         </CardContent>
-        <CardFooter className={`flex justify-around ${isMobile && 'flex-col gap-4'}`.trim()}>
+        <CardFooter className={`flex justify-around md:flex-row ${isMobile && 'flex-col gap-4'}`.trim()}>
           <Select onValueChange={(e: QuoteType) => setType(e)} defaultValue={whichType}>
             <SelectTrigger className={`cursor-pointer ${isMobile && "w-full"}`.trim()}>
               <SelectValue placeholder={upperType} />
@@ -55,7 +55,7 @@ export default function Main() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button className={`cursor-pointer hover:brightness-95 ${isMobile && "w-full"}`.trim()} onClick={exec}>
+          <Button className={`cursor-pointer hover:brightness-95 md:w-fit ${isMobile && "w-full"}`.trim()} onClick={exec}>
             {isLoading ? "Loading..." : `Get your ${upperType}`}
           </Button>
         </CardFooter>
