@@ -11,12 +11,13 @@ createRoot(document.getElementById('root')!).render(
 )
 
 if ('serviceWorker' in navigator) {
-  register('./onesignal.js')
-}
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('SW registered:', reg))
-      .catch(err => console.error('SW registration failed:', err))
+  register('/sw.js', {
+    registered: (e) => console.log("SW Registered", e),
+    updated: (e) => console.log("SW Updated", e),
+    error: (e) => console.error("SW Error", e),
+    offline: () => console.warn('SW is offline'),
+    ready: (e) => console.log("SW is ready", e),
+    cached: (e) => console.log('SW has cached', e),
+    updatefound: (e) => console.warn('There are an update for SW', e),
   })
 }
