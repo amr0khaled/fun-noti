@@ -55,7 +55,7 @@ export default function Header() {
     <header className='header'>
       <nav className='header-container'>
         <div className='flex justify-between items-center gap-4'>
-          <img src="/assets/icons/fun-noti.svg" className='size-10' />
+          <img src="../assets/fun-noti.svg" className='size-10' />
           <span className='logo'>
             Fun Noti
           </span>
