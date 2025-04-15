@@ -13,6 +13,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       filename: 'pwa.sw.js',
       manifestFilename: 'manifest.webmanifest',
+      scope: '/fun-noti',
       manifest: {
         display_override: [
           'standalone',
