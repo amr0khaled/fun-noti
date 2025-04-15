@@ -29,6 +29,16 @@ export default function Header() {
   }, [])
 
   useLayoutEffect(() => {
+    const darkBgColor = theme === 'dark' ? 'oklch(0.145 0 0)' : 'oklch(1 0 0)'
+    let bgMeta = document.head.querySelector('meta[name=background_color]')
+    if (!bgMeta) {
+      bgMeta = document.createElement('meta')
+      bgMeta.setAttribute('name', 'background_color')
+      bgMeta.setAttribute('content', darkBgColor)
+      document.head.appendChild(bgMeta)
+    } else if (bgMeta !== null) {
+      bgMeta.setAttribute('content', darkBgColor)
+    }
     const html = document.documentElement
     const matches = window.matchMedia("(prefers-color-scheme: dark)").matches
     html.classList.toggle(
@@ -44,7 +54,12 @@ export default function Header() {
   return (
     <header className='header'>
       <nav className='header-container'>
-        <span className='logo'>Fun Noti</span>
+        <div className='flex justify-between items-center gap-4'>
+          <img src="/assets/icons/fun-noti.svg" className='size-10' />
+          <span className='logo'>
+            Fun Noti
+          </span>
+        </div>
         {
           !isMobile
             ? (
