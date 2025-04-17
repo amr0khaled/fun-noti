@@ -1,9 +1,8 @@
 {
   "name": "fun_noti",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
-  "homepage": "https://amr0khaled.github.io/fun-noti",
   "scripts": {
     "dev": "vite --port 1200",
     "dev:host": "vite --port 1200 --host",
