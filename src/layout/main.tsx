@@ -4,11 +4,12 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectLabel, SelectTrigger, SelectValue, SelectGroup, SelectItem } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Spinner } from "@/components/ui/spinner"
-import { QuoteType, useFetchQuote } from "@/hooks/fetch-quotes"
+import { useFetchQuote } from "@/hooks/fetch-quotes"
 import { useIsMobile } from "@/hooks/is-mobile"
+import { QuoteResType, QuoteType } from "@/lib/types"
 
 
-const quoteTypes = ['compliment', 'fortune', 'fun_fact', 'pizza_idea', 'life_truth', 'thought']
+const quoteTypes: QuoteResType[] = ['compliment', 'fortune', 'fun_fact', 'pizza_idea', 'life_truth', 'thought']
 const titletype = ['Compliment', 'Fortune', 'Fun fact', 'Pizza idea', 'Life truth', 'Thought']
 
 export default function Main() {
@@ -20,8 +21,7 @@ export default function Main() {
     quote,
     isLoading,
     upper: upperType,
-    error
-  } = useFetchQuote()
+    error } = useFetchQuote()
   console.log(import.meta.env)
   return (
     <main className='flex justify-center items-center h-[90vh]'>
@@ -36,7 +36,7 @@ export default function Main() {
             isLoading
               ? <div className='w-full flex justify-center items-center'><Spinner /></div>
               :
-              <h3 className={`text-wrap font-semibold text-xl ${error ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-300'}`.trim()}>{!quote.data[whichType] ? 'Press this button to get your words 👇' : quote.data[whichType]}</h3>
+              <h3 className={`text-wrap font-semibold text-xl ${error ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-300'}`.trim()}>{!quote.data[whichType as QuoteResType] ? 'Press this button to get your words 👇' : quote.data[whichType as QuoteResType]}</h3>
           }
           <Separator />
         </CardContent>

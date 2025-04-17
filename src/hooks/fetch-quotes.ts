@@ -1,18 +1,14 @@
+import { Quote, QuoteType } from "@/lib/types"
 import { useCallback, useMemo, useState } from "react"
 
 
-export type QuoteType = 'compliment' | 'fortune' | 'funfact' | 'pizzaidea' | 'lifetruth' | 'thought'
-export type Quote = {
-  success: boolean,
-  data: { [key: string]: string }
-}
 
 export const useFetchQuote = () => {
   const baseApi = 'https://api.codetabs.com/v1/proxy?quest=https://my-fun-api.onrender.com/'
   const [whichType, setType] = useState<QuoteType>('compliment')
   const [isLoading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const { upper: word, setWord } = useUpper()
+  const { upper: word, setWord } = useUpperCase()
   const [quote, setQuote] = useState<Quote>({
     success: false,
     data: {}
@@ -88,7 +84,7 @@ export const useFetchQuote = () => {
 }
 
 
-export const useUpper = () => {
+export const useUpperCase = () => {
   const [whichType, setType] = useState<QuoteType>('compliment')
   const upperType = useMemo(() => {
     let type = whichType
