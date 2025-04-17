@@ -4,8 +4,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { FaRegSun, FaRegMoon } from 'react-icons/fa'
 import { IoMdMenu } from 'react-icons/io'
-import '@/style/layout/header.css'
 import { useIsMobile } from '@/hooks/is-mobile'
+import logo from '@/assets/fun-noti.svg'
+import '@/style/layout/header.css'
 
 
 export default function Header() {
@@ -55,7 +56,7 @@ export default function Header() {
     <header className='header'>
       <nav className='header-container'>
         <div className='flex justify-between items-center gap-4'>
-          <img src="../assets/fun-noti.svg" className='size-10' />
+          <img src={`${import.meta.env.PROD ? `.${logo}` : logo.slice(1)}`} className='size-10' />
           <span className='logo'>
             Fun Noti
           </span>

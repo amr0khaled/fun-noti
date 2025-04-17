@@ -13,7 +13,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       filename: 'pwa.sw.js',
       manifestFilename: 'manifest.webmanifest',
-      scope: '/fun-noti',
+      scope: process.env.NODE_ENV === 'development' ? '/' : '/fun-noti',
       manifest: {
         display_override: [
           'standalone',
@@ -24,7 +24,7 @@ export default defineConfig({
         "short_name": "Fun Noti",
         "description": "Get your compliment for today :)\nAnd allow us to push notification to you!",
         "id": "fun-noti",
-        "theme_color": "oklch(1 0 0)",
+        "theme_color": "oklch(0.145 0 0)",
         "display": "standalone",
         "icons": [
           {
@@ -500,7 +500,7 @@ export default defineConfig({
             "sizes": "1024x1024"
           }
         ],
-        start_url: process.env.PROD ? '/fun-noti' : '/',
+        start_url: process.env.NODE_ENV === 'development' ? '/' : '/fun-noti',
         screenshots: [
           {
             form_factor: 'narrow',
