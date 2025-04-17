@@ -1,5 +1,5 @@
 import { Quote, QuoteType } from "@/lib/types"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 
 
@@ -9,10 +9,14 @@ export const useFetchQuote = () => {
   const [isLoading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const { upper: word, setWord } = useUpperCase()
+  const [isOffline, setOffline] = useState(false)
   const [quote, setQuote] = useState<Quote>({
     success: false,
     data: {}
   })
+  useEffect(() => {
+    setOffline(!navigator.onLine)
+  }, [isOffline])
 
   const fetching = async () => {
     let type = whichType
@@ -43,19 +47,22 @@ export const useFetchQuote = () => {
       try {
         setError(false)
         setLoading(true)
+        if (isOffline) {
+          throw Error("OFFLINE")
+        }
         const res = await fetching()
         if (res === undefined) throw new Error("Empty response")
         setQuote(res)
         setLoading(false)
         break
       } catch (e) {
-        console.error('Retry error:', e)
+        console.error('Retry error:', e, isOffline)
         setError(true)
         setLoading(false)
         setQuote({
           success: false,
           data: {
-            [whichType]: "Connection Error."
+            [whichType]: isOffline ? "Your are offline. Try again later" : "Connection Error."
           }
         })
         if (tries === MAX_TRIES - 1) {
@@ -70,7 +77,7 @@ export const useFetchQuote = () => {
         }
       }
     }
-  }, [whichType, setWord])
+  }, [whichType, setWord, isOffline])
 
   return {
     isLoading,

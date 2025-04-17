@@ -10,8 +10,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
     pwa({
-      registerType: 'autoUpdate',
-      filename: 'pwa.sw.js',
+      mode: 'development',
+      registerType: 'prompt',
+      srcDir: 'src/lib/service-workers',
+      filename: 'sw.ts',
+      workbox: {
+        swDest: process.env.PROD ? 'dist' : 'public',
+      },
+      strategies: 'injectManifest',
       manifestFilename: 'manifest.webmanifest',
       scope: process.env.NODE_ENV === 'development' ? '/' : '/fun-noti',
       manifest: {

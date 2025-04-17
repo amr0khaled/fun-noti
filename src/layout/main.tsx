@@ -22,7 +22,6 @@ export default function Main() {
     isLoading,
     upper: upperType,
     error } = useFetchQuote()
-  console.log(import.meta.env)
   return (
     <main className='flex justify-center items-center h-[90vh]'>
       <Card className='flex flex-col justify-center w-[330px] min-w-[250px] sm:w-[500px] sm:min-w-[450px]'>
@@ -56,7 +55,7 @@ export default function Main() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button className={`cursor-pointer hover:brightness-95 md:w-fit ${isMobile && "w-full"}`.trim()} onClick={exec}>
+          <Button className={`cursor-pointer hover:brightness-95 md:w-fit ${isMobile && "w-full"}`.trim()} onClick={exec} disabled={isLoading}>
             {isLoading ? "Loading..." : `Get your ${upperType}`}
           </Button>
         </CardFooter>
